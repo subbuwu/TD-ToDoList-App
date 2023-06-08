@@ -1,24 +1,23 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="styles.css">
-    <title>To Do List</title>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Todo-List-LocalStorage</title>
+  <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <h1>To-Do List</h1>
+  <div class="wrapper">
     <form>
-        <input type="text" class="user-input">
-        <button class="selector" type="submit">
-            <i class="fa fa-2x fa-plus-square"></i>
-        </button>
+      <h1>Todo List App</h1>
+      <input type="text" class="user-input"/><i class="fa-solid fa-square-plus fa-2xl submit"></i>
     </form>
-    <div class="todo-container">
-        <ul class="todo-list"></ul>
+    <div class="display">
+      <ul class="list-items"></ul>
     </div>
-    <script src="./app.js"></script>
-    <script src="https://kit.fontawesome.com/6ca64c0dc2.js" crossorigin="anonymous"></script>
+  </div>
+  <script src="https://kit.fontawesome.com/0d33bd81df.js" crossorigin="anonymous"></script>
+  <script src="app.js"></script>
 </body>
 </html>
