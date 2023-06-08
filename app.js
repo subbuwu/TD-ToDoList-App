@@ -1,46 +1,107 @@
-const todoInput = document.querySelector(".user-input");
-const todoButton = document.querySelector(".selector");
-const todoList = document.querySelector(".todo-list");
+const input = document.querySelector('.user-input');
+const todoList = document.querySelector('.list-items');
+const todoButton = document.querySelector('.submit');
 
-todoButton.addEventListener("click", PushTodo);
-todoList.addEventListener("click", DeleteTodo);
+todoButton.addEventListener('click',appendTodo);
+todoList.addEventListener('click',removeTodo);
 
-function PushTodo(event) {
+const todos = [];
+
+function appendTodo(event) {
+    //preventing funcs
     event.preventDefault();
 
-    const todoDiv = document.createElement("div");
-    todoDiv.classList.add("todo");
+    const todoItem = document.createElement('div');
+    todoItem.classList.add('todo-list');
 
-    const newTodo = document.createElement("li");
-    newTodo.classList.add("todo-item");
-    newTodo.innerText = todoInput.value;
-    todoDiv.appendChild(newTodo);
+    const todoTitle = document.createElement('p');
+    todoTitle.classList.add('todo-title');
+    todoTitle.innerText = input.value;
 
-    const completedButton = document.createElement("button");
-    completedButton.innerHTML = '<i class="fa fa-2x fa-check"></i>';
-    completedButton.classList.add("complete-button");
-    todoDiv.appendChild(completedButton);
+    const checkButton = document.createElement('button');
+    checkButton.innerHTML = '<i class="fa fa-2x fa-check"></i>';
+    checkButton.classList.add("complete-button");
 
-    const trashButton = document.createElement("button");
-    trashButton.innerHTML = '<i class="fa fa-2x fa-trash"></i>';
-    trashButton.classList.add("trash-button");
-    todoDiv.appendChild(trashButton);
+    const deleteButton = document.createElement('button');
+    deleteButton.innerHTML = '<i class="fa fa-2x fa-trash"></i>';
+    deleteButton.classList.add("trash-button");
 
-    todoList.appendChild(todoDiv);
+    const buttonDiv = document.createElement('div');
 
-    todoInput.value = ""; 
+
+    buttonDiv.appendChild(checkButton);
+    buttonDiv.appendChild(deleteButton);
+
+    todoItem.appendChild(todoTitle);
+    todoItem.appendChild(buttonDiv);
+
+    todoList.appendChild(todoItem);
+
+    saveTodoToLocalStorage(input.value);
+
+    input.value = " ";
 }
 
-function DeleteTodo(event){
+function saveTodoToLocalStorage(todo) {
+    let todos;
+
+    // Check if there are existing todos in local storage
+    if (localStorage.getItem('todos') === null) {
+        todos = [];
+    } else {
+        todos = JSON.parse(localStorage.getItem('todos'));
+    }
+
+    todos.push(todo); // Add the new todo
+
+    localStorage.setItem('todos', JSON.stringify(todos));
+}
+
+window.addEventListener('DOMContentLoaded', () => {
+    const savedTodos = JSON.parse(localStorage.getItem('todos'));
+
+    if (savedTodos) {
+        savedTodos.forEach(todo => {
+            const todoItem = document.createElement('div');
+            todoItem.classList.add('todo-list');
+
+            const todoTitle = document.createElement('p');
+            todoTitle.classList.add('todo-title');
+            todoTitle.innerText = todo;
+
+            const checkButton = document.createElement('button');
+            checkButton.innerHTML = '<i class="fa fa-2x fa-check"></i>';
+            checkButton.classList.add("complete-button");
+
+            const deleteButton = document.createElement('button');
+            deleteButton.innerHTML = '<i class="fa fa-2x fa-trash"></i>';
+            deleteButton.classList.add("trash-button");
+
+            const buttonDiv = document.createElement('div');
+
+            buttonDiv.appendChild(checkButton);
+            buttonDiv.appendChild(deleteButton);
+
+            todoItem.appendChild(todoTitle);
+            todoItem.appendChild(buttonDiv);
+
+            todoList.appendChild(todoItem);
+        });
+    }
+});
+
+function removeTodo(event){
     const item = event.target;
 
     if(item.classList[0] === "trash-button") {
         const todo = item.parentElement;
-        todo.remove();
+        const anotherTodo = todo.parentElement
+        anotherTodo.remove();
     }
 
     if(item.classList[0] === "complete-button") {
         const todo = item.parentElement;
-        todo.classList.toggle("completed");
+        const anotherTodo = todo.parentElement
+        anotherTodo.classList.toggle("completed");
     }
 }
